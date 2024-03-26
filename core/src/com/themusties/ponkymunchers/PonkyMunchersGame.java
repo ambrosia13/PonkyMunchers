@@ -23,7 +23,7 @@ public class PonkyMunchersGame extends ApplicationAdapter {
 		player = new Player(
 			new Vector2(),
 			new Vector2(),
-			40.0f,
+			30.0f,
 			0.9f,
 			new Texture("badlogic.jpg")
 		);
