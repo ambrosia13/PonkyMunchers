@@ -15,14 +15,14 @@ public class Player implements DrawableSprite {
 	
 	public Texture texture;
 	
-	public Player(Vector2 position, Vector2 velocity, float movementSpeed, float frictionCoefficient, Texture texture) {
+	public Player(Vector2 position, Vector2 velocity, float movementSpeed, float frictionCoefficient) {
 		this.position = position;
 		this.velocity = velocity;
 		
 		this.movementSpeed = movementSpeed;
 		this.frictionCoefficient = frictionCoefficient;
 		
-		this.texture = texture;
+		this.texture = new Texture("main_character.png");
 	}
 	
 	public void updateVelocity() {

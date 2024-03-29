@@ -27,7 +27,7 @@ public class PonkyMunchersGame implements ApplicationListener {
 		batch = new SpriteBatch();
 		
 		float aspectRatio = (float) Gdx.graphics.getHeight() / Gdx.graphics.getWidth();
-		float viewportSize = 1000.0f; // meters
+		float viewportSize = 300.0f; // meters
 		
 		camera = new OrthographicCamera(viewportSize, viewportSize * aspectRatio);
 		//camera.position.set(camera.viewportWidth / 2.0f, camera.viewportHeight / 2.0f, 0.0f);
@@ -37,16 +37,15 @@ public class PonkyMunchersGame implements ApplicationListener {
 			new Vector2(),
 			new Vector2(),
 			30.0f,
-			0.9f,
-			new Texture("badlogic.jpg")
+			0.9f
 		);
 		
 		npcs = new ArrayList<>();
 		
-		npcs.add(new Npc("Susan Bones", new Vector2(150.0f, 150.0f), new Texture("badlogic.jpg")));
-		npcs.add(new Npc("Grirasa", new Vector2(450.0f, 150.0f), new Texture("badlogic.jpg")));
-		npcs.add(new Npc("Tithany", new Vector2(150.0f, 450.0f), new Texture("badlogic.jpg")));
-		npcs.add(new Npc("Jumasa", new Vector2(450.0f, 450.0f), new Texture("badlogic.jpg")));
+		npcs.add(new Npc("Susan Bones", new Vector2(150.0f, 150.0f), new Texture("bufftomato.png")));
+		npcs.add(new Npc("Grirasa", new Vector2(450.0f, 150.0f), new Texture("bufftomato.png")));
+		npcs.add(new Npc("Tithany", new Vector2(150.0f, 450.0f), new Texture("bufftomato.png")));
+		npcs.add(new Npc("Jumasa", new Vector2(450.0f, 450.0f), new Texture("bufftomato.png")));
 	}
 	
 	@Override
@@ -62,25 +61,18 @@ public class PonkyMunchersGame implements ApplicationListener {
 		player.applyFriction();
 		player.updatePosition();
 		
+		npcs.forEach(npc -> npc.interact(player));
+		
 		camera.position.set(new Vector3(player.position.x, player.position.y, 0.0f));
 		
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		
-		
+		// Draw to the screen
 		batch.begin();
 		
 		player.drawTo(batch);
-		
-//		npcs.forEach(npc -> batch.draw(
-//			npc.texture,
-//			(int) (npc.position.x - player.position.x + middleX),
-//			(int) (npc.position.y - player.position.y + middleY),
-//			50,
-//			50
-//		));
-//
-//		npcs.forEach(npc -> npc.interact(player));
+		npcs.forEach(npc -> npc.drawTo(batch));
 		
 		batch.end();
 	}
