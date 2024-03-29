@@ -1,17 +1,23 @@
 package com.themusties.ponkymunchers;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.GL32;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.ArrayList;
 
-public class PonkyMunchersGame extends ApplicationAdapter {
+public class PonkyMunchersGame implements ApplicationListener {
 	SpriteBatch batch;
+	
+	OrthographicCamera camera;
 	
 	Player player;
 	ArrayList<Npc> npcs;
@@ -19,6 +25,13 @@ public class PonkyMunchersGame extends ApplicationAdapter {
 	@Override
 	public void create() {
 		batch = new SpriteBatch();
+		
+		float aspectRatio = (float) Gdx.graphics.getHeight() / Gdx.graphics.getWidth();
+		float viewportSize = 1000.0f; // meters
+		
+		camera = new OrthographicCamera(viewportSize, viewportSize * aspectRatio);
+		//camera.position.set(camera.viewportWidth / 2.0f, camera.viewportHeight / 2.0f, 0.0f);
+		camera.update();
 		
 		player = new Player(
 			new Vector2(),
@@ -37,37 +50,49 @@ public class PonkyMunchersGame extends ApplicationAdapter {
 	}
 	
 	@Override
+	public void resize(int width, int height) {
+	
+	}
+	
+	@Override
 	public void render() {
-		if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
-			System.out.println(player.position);
-		}
-		
-		ScreenUtils.clear(0.75f, 0.75f, 0.75f, 1);
-		batch.begin();
+		ScreenUtils.clear(0.75f, 0.95f, 0.75f, 1.0f);
 		
 		player.updateVelocity();
 		player.applyFriction();
 		player.updatePosition();
 		
-		int width = Gdx.graphics.getWidth();
-		int height = Gdx.graphics.getHeight();
+		camera.position.set(new Vector3(player.position.x, player.position.y, 0.0f));
 		
-		int middleX = width / 2;
-		int middleY = height / 2;
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
 		
-		batch.draw(player.texture, middleX, middleY, 50, 50);
 		
-		npcs.forEach(npc -> batch.draw(
-			npc.texture,
-			(int) (npc.position.x - player.position.x + middleX),
-			(int) (npc.position.y - player.position.y + middleY),
-			50,
-			50
-		));
+		batch.begin();
 		
-		npcs.forEach(npc -> npc.interact(player));
+		player.drawTo(batch);
+		
+//		npcs.forEach(npc -> batch.draw(
+//			npc.texture,
+//			(int) (npc.position.x - player.position.x + middleX),
+//			(int) (npc.position.y - player.position.y + middleY),
+//			50,
+//			50
+//		));
+//
+//		npcs.forEach(npc -> npc.interact(player));
 		
 		batch.end();
+	}
+	
+	@Override
+	public void pause() {
+		System.out.println("Game paused");
+	}
+	
+	@Override
+	public void resume() {
+		System.out.println("Game resumed");
 	}
 	
 	@Override

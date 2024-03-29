@@ -3,9 +3,10 @@ package com.themusties.ponkymunchers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
-public class Player {
+public class Player implements DrawableSprite {
 	public Vector2 position;
 	public Vector2 velocity;
 	
@@ -54,5 +55,19 @@ public class Player {
 	
 	public void updatePosition() {
 		this.position.add(this.velocity);
+	}
+	
+	@Override
+	public void drawTo(SpriteBatch batch) {
+		float halfTextureBoundsX = this.texture.getWidth() / 2.0f;
+		float halfTextureBoundsY = this.texture.getHeight() / 2.0f;
+		
+		batch.draw(
+			this.texture,
+			this.position.x - halfTextureBoundsX,
+			this.position.y - halfTextureBoundsY,
+			this.texture.getWidth(),
+			this.texture.getHeight()
+		);
 	}
 }
