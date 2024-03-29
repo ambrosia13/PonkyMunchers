@@ -8,6 +8,9 @@ import com.themusties.ponkymunchers.PonkyMunchersGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+		
+		config.setWindowedMode(1920, 1080);
+		
 		config.setForegroundFPS(60);
 		config.setTitle("PonkyMunchers");
 		config.setOpenGLEmulation(Lwjgl3ApplicationConfiguration.GLEmulation.GL32, 3, 2);
