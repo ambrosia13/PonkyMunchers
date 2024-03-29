@@ -17,7 +17,7 @@ public class Npc implements DrawableSprite {
 	}
 	
 	boolean shouldInteractWith(Vector2 position) {
-		return this.position.cpy().sub(position).len() < 50.0f;
+		return this.position.cpy().sub(position).len() < Math.max(this.texture.getWidth(), this.texture.getHeight());
 	}
 	
 	public void interact(Player player) {
